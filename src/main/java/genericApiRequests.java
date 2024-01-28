@@ -4,11 +4,11 @@ import static io.restassured.RestAssured.*;
 
 public class genericApiRequests {
 
-    public static Response post() {
+    public static Response post(String body, String endPoint) {
         RestAssured.baseURI = Constants.jiraBaseUrl;
         Response response =
                 given().header("Content-Type","application/json")
-                        .body("").when().post();
+                        .body(body).when().post();
         return response;
     }
 
