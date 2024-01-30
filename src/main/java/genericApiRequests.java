@@ -5,7 +5,7 @@ import static io.restassured.RestAssured.*;
 public class genericApiRequests {
 
     public static Response post(String body, String endPoint) {
-        RestAssured.baseURI = Constants.jiraBaseUrl;
+        RestAssured.baseURI = Constants.jiraBaseURL;
         Response response =
                 given().header("Content-Type","application/json")
                         .body(body).when().post();
@@ -13,7 +13,7 @@ public class genericApiRequests {
     }
 
     public static Response get() {
-        RestAssured.baseURI = Constants.jiraBaseUrl;
+        RestAssured.baseURI = Constants.jiraBaseURL;
         Response response =
                 given().header("Content-Type","application/json")
                         .body("").when().get();
@@ -21,7 +21,7 @@ public class genericApiRequests {
     }
 
     public static Response put() {
-        RestAssured.baseURI = Constants.jiraBaseUrl;
+        RestAssured.baseURI = Constants.jiraBaseURL;
         Response response =
                 given().header("Content-Type","application/json")
                         .body("").when().put();
@@ -29,7 +29,7 @@ public class genericApiRequests {
     }
 
     public static Response delete() {
-        RestAssured.baseURI = Constants.jiraBaseUrl;
+        RestAssured.baseURI = Constants.jiraBaseURL;
         Response response =
                 given().header("Content-Type","application/json")
                         .body("").when().delete();
