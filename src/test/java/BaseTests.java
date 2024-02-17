@@ -1,3 +1,4 @@
+import apiManager.ApiHelper;
 import org.testng.annotations.BeforeSuite;
 
 public class BaseTests extends TestHelper {
@@ -6,7 +7,7 @@ public class BaseTests extends TestHelper {
 
     @BeforeSuite
     private void beforeSuite() {
-        sessionId = CommonAPIRequests.createSessionId();
+        sessionId = ApiHelper.getSessionId();
     }
 
 }
