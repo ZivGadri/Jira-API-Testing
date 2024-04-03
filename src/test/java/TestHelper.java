@@ -7,9 +7,10 @@ import org.apache.logging.log4j.Logger;
 
 public class TestHelper {
     private static final Logger logger = LogManager.getLogger(TestHelper.class);
+    public static final String PROJECT_NAME = "Test_Project";
 
     public static Project buildProjectObject() {
-        return new Project.ProjectBuilder("Example", "Test_Project").
+        return new Project.ProjectBuilder("Example", PROJECT_NAME).
                 setProjectTypeKey("Test").
                 setProjectTemplateKey("com.atlassian.jira-core-project-templates:jira-core-project-management").
                 setDescription("This is a project for demo testing").
