@@ -1,5 +1,6 @@
 package apiManager;
 
+import apiManager.models.Comment;
 import apiManager.models.Issue;
 import apiManager.models.Project;
 import io.restassured.builder.RequestSpecBuilder;
@@ -58,6 +59,13 @@ public class ApiHelper {
         String path = EndPoints.CREATE_ISSUE;
         Response response = APIRequests.makePostRequestToCreate(path, issue);
         return (Issue) response.as(Issue.class);
+    }
+
+    public Comment AddComment(Comment comment, Issue issue) {
+        initResponseSpecification(201);
+        String path = String.format(EndPoints.ADD_COMMENT, issue.getId());
+        Response response = APIRequests.makePostRequestToCreate(path, comment);
+        return (Comment) response.as(Comment.class);
     }
 
     /**
