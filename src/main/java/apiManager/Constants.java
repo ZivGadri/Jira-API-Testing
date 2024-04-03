@@ -2,9 +2,10 @@ package apiManager;
 
 public class Constants {
 
-    public static final String jiraBaseURL = "http://localhost:8080/jira";
-    public static final String jiraUserName = "";
-    public static final String jiraPassword = "";
+    protected static final String PROTOCOL = "http://";
+    public static final String JIRA_BASE_URL = "localhost:8080";
+    public static final String JIRA_USER_NAME = "";
+    public static final String JIRA_PASSWORD = "";
 
 
 
