@@ -68,6 +68,13 @@ public class ApiHelper {
         return (Comment) response.as(Comment.class);
     }
 
+    public Comment UpdateComment(Comment comment, Issue issue) {
+        initResponseSpecification(200);
+        String path = String.format(EndPoints.UPDATE_COMMENT, issue.getId(), comment.getId());
+        Response response = APIRequests.makePostRequestToCreate(path, comment);
+        return (Comment) response.as(Comment.class);
+    }
+
     /**
      * This method initializes the common request specs for the api calls to be reused in all the API requests
      */

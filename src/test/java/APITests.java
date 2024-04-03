@@ -1,12 +1,20 @@
 import apiManager.ApiHelper;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 public class APITests extends TestFlows {
 
     @BeforeClass
     public void beforeClass() {
         apiHelper = new ApiHelper();
+    }
+
+    @BeforeTest
+    public void beforeTest() {
+        softAssert = new SoftAssert();
     }
 
     @Test
@@ -26,12 +34,11 @@ public class APITests extends TestFlows {
 
     @Test
     public void testUpdatingComment() {
-
+        testUpdatingAComment();
     }
 
     @Test
     public void testDeleteComment() {
-
     }
 
     @Test
@@ -42,6 +49,11 @@ public class APITests extends TestFlows {
     @Test
     public void testDeleteProject() {
 
+    }
+
+    @AfterClass
+    public void afterTest() {
+        softAssert.assertAll();
     }
 
 }

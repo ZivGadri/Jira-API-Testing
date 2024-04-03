@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class Comment {
     private String body;
     private Visibility visibility;
+    private String id;
 
     public String getBody() {
         return body;
@@ -15,6 +16,14 @@ public class Comment {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Comment(String comment) {
