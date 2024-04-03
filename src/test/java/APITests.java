@@ -2,9 +2,8 @@ import apiManager.ApiHelper;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class APITests extends BaseTests {
+public class APITests extends TestFlows {
 
-    private ApiHelper apiHelper;
     @BeforeClass
     public void beforeClass() {
         apiHelper = new ApiHelper();
@@ -12,17 +11,17 @@ public class APITests extends BaseTests {
 
     @Test
     public void testCreatingNewProject() {
-        testProject = apiHelper.createNewProject(buildProjectObject());
+        testCreateNewProjectAndAssertWithUI();
     }
 
     @Test
     public void testCreatingNewIssue() {
-        testIssue = apiHelper.createNewIssue(buildIssueObject(testProject));
+        testCreatingANewIssueAndAssertUsingUI();
     }
 
     @Test
-    public void testCreatingNewComment() {
-
+    public void testAddNewComment() {
+        testAddingACommentToNewIssue();
     }
 
     @Test
