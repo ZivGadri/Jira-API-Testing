@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 public class Project {
     private static final Logger logger = LogManager.getLogger(Project.class);
     private String key;
+    private String id;
     private String name;
     private String projectTypeKey;
     private String projectTemplateKey;
@@ -29,6 +30,14 @@ public class Project {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -127,7 +136,8 @@ public class Project {
         this.categoryId = categoryId;
     }
 
-    public Project() {
+    public Project(Project project) {
+        this.key = project.getKey();
     }
 
     private Project(ProjectBuilder builder) {

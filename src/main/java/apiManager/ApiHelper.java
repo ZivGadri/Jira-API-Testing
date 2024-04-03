@@ -1,5 +1,6 @@
 package apiManager;
 
+import apiManager.models.Issue;
 import apiManager.models.Project;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
@@ -24,7 +25,6 @@ public class ApiHelper {
     protected static ResponseSpecification responseSpecification;
     private static JsonPath jsonPath;
     private static String sessionId;
-    private static String projectID;
 
     public static void initRequestSpecifications() {
         initRequestSpecification();
@@ -45,12 +45,19 @@ public class ApiHelper {
         sessionId = jsonPath.getString("session.value");
     }
 
-    public void createNewProject(Project project) {
+    public Project createNewProject(Project project) {
         initResponseSpecification(201);
         String path = EndPoints.CREATE_PROJECT;
         Response response = APIRequests.makePostRequestToCreate(path, project);
         Assert.assertEquals(getValueFromResponse(response, "key"), project.getKey());
-        projectID = getValueFromResponse(response, "id");
+        return (Project) response.as(Project.class);
+    }
+
+    public Issue createNewIssue(Issue issue) {
+        initResponseSpecification(201);
+        String path = EndPoints.CREATE_ISSUE;
+        Response response = APIRequests.makePostRequestToCreate(path, issue);
+        return (Issue) response.as(Issue.class);
     }
 
     /**

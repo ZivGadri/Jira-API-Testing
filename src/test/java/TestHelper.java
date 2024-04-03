@@ -1,4 +1,6 @@
+import apiManager.models.Issue;
 import apiManager.models.Project;
+import apiManager.models.enums.IssueTypes;
 
 public class TestHelper {
 
@@ -14,7 +16,11 @@ public class TestHelper {
                 setIssueSecurityScheme(12345).
                 setPermissionScheme(12345).
                 setNotificationScheme(12345).
-                setCategoryId(11111)
-                .build();
+                setCategoryId(11111).
+                build();
+    }
+
+    public static Issue buildIssueObject(Project project) {
+        return new Issue(project, IssueTypes.BUG);
     }
 }
