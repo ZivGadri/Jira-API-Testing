@@ -29,7 +29,7 @@ public class BaseTests {
     protected PropertiesManager props;
     protected final static String pathToLocalPropertiesFile = System.getProperty("pathToLocalPropertiesFile", "src/test/resources/JiraTesting.properties");
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     public void beforeClass() {
         setProperties();
         setCredentialsVariables();
