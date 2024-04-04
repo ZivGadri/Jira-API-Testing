@@ -1,8 +1,5 @@
 import apiManager.ApiHelper;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 
 public class APITests extends TestFlows {
@@ -52,10 +49,10 @@ public class APITests extends TestFlows {
 
     @Test
     public void testDeleteProject() {
-        testDeleteIssueFromProject();
+        testDeleteProjectFromWorkspace();
     }
 
-    @AfterClass
+    @AfterTest
     public void afterTest() {
         softAssert.assertAll();
     }
