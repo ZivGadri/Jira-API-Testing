@@ -47,7 +47,7 @@ public class APITests extends TestFlows {
 
     @Test
     public void testDeleteIssue() {
-
+        testDeleteIssueFromProject();
     }
 
     @Test
