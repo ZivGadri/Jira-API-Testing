@@ -1,12 +1,13 @@
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
+import reporting.DemoProject_Jira;
 import reporting.TestListeners;
 
 
 @Listeners(TestListeners.class)
 public class APITests extends TestFlows {
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     public void beforeClass() {
         super.beforeClass();
     }
@@ -17,36 +18,43 @@ public class APITests extends TestFlows {
     }
 
     @Test
+    @DemoProject_Jira(testRailCaseId = "***", testName = "Test creating a new project by API and assert using UI")
     public void testCreatingNewProject() {
         testCreateNewProjectAndAssertWithUI();
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreatingNewProject")
+    @DemoProject_Jira(testRailCaseId = "***", testName = "Test creating a new issue by API and assert using UI")
     public void testCreatingNewIssue() {
         testCreatingANewIssueAndAssertUsingUI();
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreatingNewIssue")
+    @DemoProject_Jira(testRailCaseId = "***", testName = "Test creating a new comment by API and assert using UI")
     public void testAddNewComment() {
         testAddingACommentToNewIssue();
     }
 
-    @Test
+    @Test(dependsOnMethods = "testAddNewComment")
+    @DemoProject_Jira(testRailCaseId = "***", testName = "Test updating a comment by API and assert using UI")
     public void testUpdatingComment() {
         testUpdatingAComment();
     }
 
-    @Test
+    @Test(dependsOnMethods = "testAddNewComment")
+    @DemoProject_Jira(testRailCaseId = "***", testName = "Test deleting a comment by API and assert using UI")
     public void testDeleteComment() {
         testDeletingACommentFromIssue();
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreatingNewIssue")
+    @DemoProject_Jira(testRailCaseId = "***", testName = "Test deleting an issue by API and assert using UI")
     public void testDeleteIssue() {
         testDeleteIssueFromProject();
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreatingNewProject")
+    @DemoProject_Jira(testRailCaseId = "***", testName = "Test deleting a project by API and assert using UI")
     public void testDeleteProject() {
         testDeleteProjectFromWorkspace();
     }

@@ -2,7 +2,7 @@ import org.testng.annotations.BeforeClass;
 
 public class TestFlows extends BaseTests {
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     public void beforeClass() {
         super.beforeClass();
     }
