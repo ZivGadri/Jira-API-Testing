@@ -24,14 +24,14 @@ public class ApiHelper {
     private static final Logger logger = LogManager.getLogger(ApiHelper.class);
     protected static RequestSpecification requestSpecification;
     protected static ResponseSpecification responseSpecification;
-    private static JsonPath jsonPath;
-    private static String sessionId;
+    private String sessionId;
 
-    public static void initRequestSpecifications() {
+    public ApiHelper() {
         initRequestSpecification();
+        createSessionId();
     }
 
-    public static void createSessionId() {
+    public void createSessionId() {
         String path = Constants.PROTOCOL + Constants.JIRA_BASE_URL + EndPoints.CREATE_SESSION;
         HashMap<String, Object> createSessionIdMap = new HashMap<>();
         createSessionIdMap.put("username", Constants.JIRA_USER_NAME);
@@ -39,11 +39,10 @@ public class ApiHelper {
         Response response = APIRequests.makePostRequestToCreateSessionID(path, createSessionIdMap);
         try {
             assert response != null;
-            jsonPath = new JsonPath(response.asString());
+            sessionId = getValueFromResponse(response, "session.value");
         } catch (AssertionError ae) {
             logFailAssertion(ae);
         }
-        sessionId = jsonPath.getString("session.value");
     }
 
     public Project createNewProject(Project project) {
@@ -61,25 +60,38 @@ public class ApiHelper {
         return (Issue) response.as(Issue.class);
     }
 
-    public Comment AddComment(Comment comment, Issue issue) {
+    public Comment addComment(Comment comment, Issue issue) {
         initResponseSpecification(201);
         String path = String.format(EndPoints.ADD_COMMENT, issue.getId());
         Response response = APIRequests.makePostRequestToCreate(path, comment);
         return (Comment) response.as(Comment.class);
     }
 
-    public Comment UpdateComment(Comment comment, Issue issue) {
+    public Comment updateComment(Comment comment, Issue issue) {
         initResponseSpecification(200);
         String path = String.format(EndPoints.UPDATE_COMMENT, issue.getId(), comment.getId());
-        Response response = APIRequests.makePostRequestToCreate(path, comment);
+        Response response = APIRequests.makePutRequestToUpdate(path, comment);
         return (Comment) response.as(Comment.class);
+    }
+
+    public void deleteComment(Comment comment, Issue issue) {
+        initResponseSpecification(204);
+        String path = String.format(EndPoints.DELETE_COMMENT, issue.getId(), comment.getId());
+        APIRequests.makeDeleteRequest(path);
+    }
+
+    public int getNumOfCommentsForIssue(Issue issue) {
+        initResponseSpecification(200);
+        String path = String.format(EndPoints.GET_ALL_COMMENTS, issue.getId());
+        Response response = APIRequests.makeGetRequestToRetrieve(path);
+        return Integer.parseInt(getValueFromResponse(response, "total"));
     }
 
     /**
      * This method initializes the common request specs for the api calls to be reused in all the API requests
      */
 
-    private static void initRequestSpecification() {
+    private void initRequestSpecification() {
         RequestSpecification req = new RequestSpecBuilder().
                 setBaseUri(Constants.PROTOCOL + Constants.JIRA_BASE_URL).
                 addHeader("cookie", "JSESSIONID=" + sessionId).
@@ -142,5 +154,13 @@ public class ApiHelper {
         return jsonPath.getString(keyPath);
     }
 
+    public static void threadSleepLog(long sec, String extraDetails) {
+        logger.info("Thread is sleeping for {} second(s) {}", sec, extraDetails);
+        try {
+            Thread.sleep(sec * 1000);
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+        }
+    }
 
 }

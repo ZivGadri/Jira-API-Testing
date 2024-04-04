@@ -7,9 +7,12 @@ import org.testng.asserts.SoftAssert;
 
 public class APITests extends TestFlows {
 
+    public APITests(ApiHelper apiHelper) {
+        super(apiHelper);
+    }
+
     @BeforeClass
     public void beforeClass() {
-        apiHelper = new ApiHelper();
     }
 
     @BeforeTest
@@ -39,6 +42,7 @@ public class APITests extends TestFlows {
 
     @Test
     public void testDeleteComment() {
+        testDeletingACommentFromIssue();
     }
 
     @Test

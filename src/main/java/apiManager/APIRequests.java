@@ -59,12 +59,12 @@ public class APIRequests extends ApiHelper {
      * @param path  path for the request
      * @return response received
      */
-    protected Response makeGetRequestToRetrieve(String path) {
+    protected static Response makeGetRequestToRetrieve(String path) {
         try {
             return
             requestSpecification.
                     when().
-                    post(path).
+                    get(path).
                     then().
                     spec(responseSpecification).
                     log().ifValidationFails().
@@ -86,13 +86,13 @@ public class APIRequests extends ApiHelper {
      * @param path        path for the request
      * @return response received
      */
-    protected Response makePutRequestToUpdate(String path, Object toUpdate) {
+    protected static Response makePutRequestToUpdate(String path, Object toUpdate) {
         try {
             return
             requestSpecification.
                     body(toUpdate).
                     when().
-                    post(path).
+                    put(path).
                     then().
                     spec(responseSpecification).
                     log().ifValidationFails().
@@ -111,12 +111,12 @@ public class APIRequests extends ApiHelper {
      *
      * @param path path for the request
      */
-    protected Response makeDeleteRequest(String path) {
+    protected static Response makeDeleteRequest(String path) {
         try {
             return
             requestSpecification.
                     when().
-                    post(path).
+                    delete(path).
                     then().
                     spec(responseSpecification).
                     log().ifValidationFails().

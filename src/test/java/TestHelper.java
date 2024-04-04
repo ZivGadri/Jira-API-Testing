@@ -1,3 +1,4 @@
+import apiManager.ApiHelper;
 import apiManager.models.Comment;
 import apiManager.models.Issue;
 import apiManager.models.Project;
@@ -8,6 +9,11 @@ import org.apache.logging.log4j.Logger;
 public class TestHelper {
     private static final Logger logger = LogManager.getLogger(TestHelper.class);
     public static final String PROJECT_NAME = "Test_Project";
+    private ApiHelper apiHelper;
+
+    public TestHelper(ApiHelper apiHelper) {
+        this.apiHelper = apiHelper;
+    }
 
     public static Project buildProjectObject() {
         return new Project.ProjectBuilder("Example", PROJECT_NAME).
@@ -33,8 +39,12 @@ public class TestHelper {
         return new Comment(comment);
     }
 
-    public static void threadSleepLog(long sec) {
-        logger.info("Thread is sleeping for {} second(s)", sec);
+    public int getNumberOfCommentsForIssue(Issue issue) {
+        return apiHelper.getNumOfCommentsForIssue(issue);
+    }
+
+    public static void threadSleepLog(long sec, String extraDetails) {
+        logger.info("Thread is sleeping for {} second(s) {}", sec, extraDetails);
         try {
             Thread.sleep(sec * 1000);
         } catch (InterruptedException ie) {

@@ -15,10 +15,13 @@ public class BaseTests extends TestHelper {
     protected String updatedTestCommentText = "This is an updated test comment";
     protected SoftAssert softAssert;
 
+    public BaseTests(ApiHelper apiHelper) {
+        super(apiHelper);
+    }
+
     @BeforeSuite
     private void beforeSuite() {
-        ApiHelper.createSessionId();
-        ApiHelper.initRequestSpecifications();
+
     }
 
 
