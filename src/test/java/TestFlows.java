@@ -1,15 +1,16 @@
-import apiManager.ApiHelper;
+import org.testng.annotations.BeforeClass;
 
 public class TestFlows extends BaseTests {
 
-    public TestFlows(ApiHelper apiHelper) {
-        super(apiHelper);
+    @BeforeClass
+    public void beforeClass() {
+        super.beforeClass();
     }
 
     public void testCreateNewProjectAndAssertWithUI() {
         testProject = apiHelper.createNewProject(buildProjectObject());
         threadSleepLog(3, "right after creating a new project");
-        softAssert.assertEquals(testProject.getName(), PROJECT_NAME);
+        softAssert.assertEquals(testProject.getName(), JIRA_PROJECT_NAME);
         softAssert.assertAll();
     }
 

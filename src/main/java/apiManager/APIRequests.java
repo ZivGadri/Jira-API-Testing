@@ -2,9 +2,10 @@ package apiManager;
 
 import io.restassured.response.Response;
 
+import static apiManager.ApiHelper.*;
 import static io.restassured.RestAssured.given;
 
-public class APIRequests extends ApiHelper {
+public class APIRequests {
 
     protected static Response makePostRequestToCreateSessionID(String path, Object credentials) {
         try {

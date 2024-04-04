@@ -1,15 +1,14 @@
-import apiManager.ApiHelper;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
+import reporting.TestListeners;
 
+
+@Listeners(TestListeners.class)
 public class APITests extends TestFlows {
-
-    public APITests(ApiHelper apiHelper) {
-        super(apiHelper);
-    }
 
     @BeforeClass
     public void beforeClass() {
+        super.beforeClass();
     }
 
     @BeforeTest

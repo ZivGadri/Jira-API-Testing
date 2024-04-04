@@ -22,20 +22,21 @@ import static io.restassured.RestAssured.given;
 
 public class ApiHelper {
     private static final Logger logger = LogManager.getLogger(ApiHelper.class);
+    public static final String JIRA_BASE_URL = "http://localhost:8080";
     protected static RequestSpecification requestSpecification;
     protected static ResponseSpecification responseSpecification;
     private String sessionId;
 
-    public ApiHelper() {
+    public ApiHelper(String jiraUsername, String jiraPassword) {
         initRequestSpecification();
-        createSessionId();
+        createSessionId(jiraUsername, jiraPassword);
     }
 
-    public void createSessionId() {
-        String path = Constants.PROTOCOL + Constants.JIRA_BASE_URL + EndPoints.CREATE_SESSION;
+    public void createSessionId(String jiraUsername, String jiraPassword) {
+        String path = JIRA_BASE_URL + EndPoints.CREATE_SESSION;
         HashMap<String, Object> createSessionIdMap = new HashMap<>();
-        createSessionIdMap.put("username", Constants.JIRA_USER_NAME);
-        createSessionIdMap.put("password", Constants.JIRA_PASSWORD);
+        createSessionIdMap.put("username", jiraUsername);
+        createSessionIdMap.put("password", jiraPassword);
         Response response = APIRequests.makePostRequestToCreateSessionID(path, createSessionIdMap);
         try {
             assert response != null;
@@ -119,7 +120,7 @@ public class ApiHelper {
 
     private void initRequestSpecification() {
         RequestSpecification req = new RequestSpecBuilder().
-                setBaseUri(Constants.PROTOCOL + Constants.JIRA_BASE_URL).
+                setBaseUri(JIRA_BASE_URL).
                 addHeader("cookie", "JSESSIONID=" + sessionId).
                 setContentType(ContentType.JSON).
                 build();
@@ -137,6 +138,11 @@ public class ApiHelper {
                 build();
     }
 
+    private String getValueFromResponse(Response response, String keyPath) {
+        JsonPath jsonPath = new JsonPath(response.asString());
+        return jsonPath.getString(keyPath);
+    }
+
     /**
      * This method logs and throws an assertion error
      * and uses {@link #getMethodName(Throwable)}
@@ -144,7 +150,7 @@ public class ApiHelper {
      *
      * @param throwable throwable as caught
      */
-    protected static void logFailAssertion(Throwable throwable) {
+    public static void logFailAssertion(Throwable throwable) {
         logger.error("\n{} - request failed due to unexpected status code:\n{}", getMethodName(throwable), throwable.getMessage());
         throw new AssertionError(throwable.getMessage());
     }
@@ -156,7 +162,7 @@ public class ApiHelper {
      *
      * @param throwable throwable as caught
      */
-    protected static void logFailUnexpected(Throwable throwable) {
+    public static void logFailUnexpected(Throwable throwable) {
         logger.error("\n{} - request failed due to exception:\n{}", getMethodName(throwable), throwable.getMessage());
         throw new RuntimeException(throwable.getMessage());
     }
@@ -173,11 +179,6 @@ public class ApiHelper {
                 filter(stackTraceElement -> stackTraceElement.getClassName().contains("API")).
                 forEachOrdered(stackTraceElement -> methodName.set(stackTraceElement.getMethodName()));
         return methodName.get();
-    }
-
-    private String getValueFromResponse(Response response, String keyPath) {
-        JsonPath jsonPath = new JsonPath(response.asString());
-        return jsonPath.getString(keyPath);
     }
 
     public static void threadSleepLog(long sec, String extraDetails) {
