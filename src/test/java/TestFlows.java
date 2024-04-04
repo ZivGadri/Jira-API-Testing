@@ -40,10 +40,17 @@ public class TestFlows extends BaseTests {
         apiHelper.deleteIssue(testIssue);
         threadSleepLog(3, "right after deleting an issue");
         softAssert.assertEquals(
-                apiHelper.getDeletedIssueResponseStatusCode(testIssue),
+                apiHelper.getDeletedIssueGetResponseStatusCode(testIssue),
                 404,
                 "Status code for getting the deleted issue was not as expected");
     }
 
-
+    public void testDeleteProjectFromWorkspace() {
+        apiHelper.deleteProject(testProject);
+        threadSleepLog(3, "right after deleting a project");
+        softAssert.assertEquals(
+                apiHelper.getDeletedIssueGetResponseStatusCode(testIssue),
+                404,
+                "Status code for getting the deleted project was not as expected");
+    }
 }
