@@ -80,11 +80,24 @@ public class ApiHelper {
         APIRequests.makeDeleteRequest(path);
     }
 
+    public void deleteIssue(Issue issue) {
+        initResponseSpecification(204);
+        String path = String.format(EndPoints.DELETE_ISSUE, issue.getId());
+        APIRequests.makeDeleteRequest(path);
+    }
+
     public int getNumOfCommentsForIssue(Issue issue) {
         initResponseSpecification(200);
         String path = String.format(EndPoints.GET_ALL_COMMENTS, issue.getId());
         Response response = APIRequests.makeGetRequestToRetrieve(path);
         return Integer.parseInt(getValueFromResponse(response, "total"));
+    }
+
+    public int getDeletedIssueResponseStatusCode(Issue issue) {
+        initResponseSpecification(404);
+        String path = String.format(EndPoints.GET_ISSUE, issue.getId());
+        Response response = APIRequests.makeGetRequestToRetrieve(path);
+        return response.getStatusCode();
     }
 
     /**
