@@ -86,6 +86,12 @@ public class ApiHelper {
         APIRequests.makeDeleteRequest(path);
     }
 
+    public void deleteProject(Project project) {
+        initResponseSpecification(204);
+        String path = String.format(EndPoints.DELETE_PROJECT, project.getId());
+        APIRequests.makeDeleteRequest(path);
+    }
+
     public int getNumOfCommentsForIssue(Issue issue) {
         initResponseSpecification(200);
         String path = String.format(EndPoints.GET_ALL_COMMENTS, issue.getId());
@@ -93,9 +99,16 @@ public class ApiHelper {
         return Integer.parseInt(getValueFromResponse(response, "total"));
     }
 
-    public int getDeletedIssueResponseStatusCode(Issue issue) {
+    public int getDeletedIssueGetResponseStatusCode(Issue issue) {
         initResponseSpecification(404);
         String path = String.format(EndPoints.GET_ISSUE, issue.getId());
+        Response response = APIRequests.makeGetRequestToRetrieve(path);
+        return response.getStatusCode();
+    }
+
+    public int getDeletedProjectGetResponseStatusCode(Project project) {
+        initResponseSpecification(404);
+        String path = String.format(EndPoints.GET_PROJECT, project.getId());
         Response response = APIRequests.makeGetRequestToRetrieve(path);
         return response.getStatusCode();
     }
