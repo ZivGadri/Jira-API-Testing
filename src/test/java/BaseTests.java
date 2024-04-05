@@ -5,18 +5,21 @@ import apiManager.models.Project;
 import apiManager.models.enums.IssueTypes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.asserts.SoftAssert;
 import properties.PropertiesManager;
 
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.Objects;
 
 import static apiManager.ApiHelper.logFailUnexpected;
 
 public class BaseTests {
     private static final Logger logger = LogManager.getLogger(BaseTests.class);
-    public static final String JIRA_PROJECT_NAME = "Ziv Gadri Demo Project";
+    public final String JIRA_PROJECT_NAME = "Ziv Gadri Demo Project";
     protected String JIRA_USER_NAME;
     protected String JIRA_PASSWORD;
     protected ApiHelper apiHelper;
@@ -27,14 +30,29 @@ public class BaseTests {
     protected String updatedTestCommentText = "This is an updated test comment";
     protected SoftAssert softAssert;
     protected PropertiesManager props;
-    protected final static String pathToLocalPropertiesFile = System.getProperty("pathToLocalPropertiesFile", "src/test/resources/JiraTesting.properties");
+    protected final String pathToLocalPropertiesFile = System.getProperty("pathToLocalPropertiesFile", "src/test/resources/JiraTesting.properties");
+    protected WebDriver webDriver;
+    protected WebDriverFactory webDriverFactory;
 
     @BeforeClass(alwaysRun = true)
     public void beforeClass() {
         setProperties();
-        setCredentialsVariables();
+        setJiraCredentials();
         apiHelper = new ApiHelper(JIRA_USER_NAME, JIRA_PASSWORD);
+        webDriverFactory = new WebDriverFactory(
+                Boolean.parseBoolean(getEnvVarWithDefault("IS_BROWSER_LOCAL", props.getIsBrowserLocal())),
+                getEnvVarWithDefault("SAUCELABS_USER", props.getSauceLabsUser()),
+                getEnvVarWithDefault("SAUCELABS_KEY", props.getSauceLabsKey()),
+                getEnvVarWithDefault("BROWSER_TYPE", props.getBrowserType()),
+                getEnvVarWithDefault("OS_PLATFORM", props.getOsPlatform())
+                );
     }
+
+    @BeforeMethod(alwaysRun = true)
+    public void beforeMethod(Method method) {
+        webDriver = webDriverFactory.initWebDriver(method);
+    }
+
 
     public void setProperties() {
         try {
@@ -52,14 +70,14 @@ public class BaseTests {
 
     /**
      * This method will look for an environment variable by the varName parameter.
-     * It will return the def value in case there will be no such env var - varName
+     * It will return the def value in case there will be no such env var - varName.
      *
      * @param varName   The key value for the environment variable
      * @param def       The default value to return if no env variable is found
      *
      * @return String value
      **/
-    public static String getEnvVarWithDefault(String varName, String def) {
+    public String getEnvVarWithDefault(String varName, String def) {
         String returnEnvValue = System.getenv(varName);
         String returnPropValue = System.getProperty(varName);
         if ((Objects.isNull(returnEnvValue) || returnEnvValue.isEmpty())
@@ -70,7 +88,7 @@ public class BaseTests {
         } else return returnEnvValue;
     }
 
-    protected void setCredentialsVariables() {
+    protected void setJiraCredentials() {
         JIRA_USER_NAME = getEnvVarWithDefault("JIRA_USER_NAME", props.getJiraUserName());
         JIRA_PASSWORD = getEnvVarWithDefault("JIRA_PASSWORD", props.getJiraPassword());
     }
@@ -84,7 +102,7 @@ public class BaseTests {
         }
     }
 
-    public static Project buildProjectObject() {
+    public Project buildProjectObject() {
         return new Project.ProjectBuilder("Example", JIRA_PROJECT_NAME).
                 setProjectTypeKey("Test").
                 setProjectTemplateKey("com.atlassian.jira-core-project-templates:jira-core-project-management").

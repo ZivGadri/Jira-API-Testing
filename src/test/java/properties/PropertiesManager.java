@@ -52,5 +52,9 @@ public class PropertiesManager {
     public String getSlackChannel() { return prop.getProperty("SLACK_CHANNEL"); }
     public String reportToTestRail() { return prop.getProperty("REPORT_TO_TESTRAIL"); }
     public String reportToSlack() { return prop.getProperty("REPORT_TO_SLACK"); }
-
+    public String getSauceLabsUser() { return prop.getProperty("SAUCELABS_USER"); }
+    public String getSauceLabsKey() { return prop.getProperty("SAUCELABS_KEY"); }
+    public String getIsBrowserLocal() { return prop.getProperty("IS_BROWSER_LOCAL"); }
+    public String getBrowserType() { return prop.getProperty("BROWSER_TYPE"); }
+    public String getOsPlatform() { return prop.getProperty("OS_PLATFORM"); }
 }

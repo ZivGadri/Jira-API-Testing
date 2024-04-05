@@ -12,8 +12,8 @@ public class APITests extends TestFlows {
         super.beforeClass();
     }
 
-    @BeforeTest
-    public void beforeTest() {
+    @BeforeMethod
+    public void beforeMethod() {
         softAssert = new SoftAssert();
     }
 
