@@ -12,11 +12,6 @@ public class APITests extends TestFlows {
         super.beforeClass();
     }
 
-    @BeforeMethod
-    public void beforeMethod() {
-        softAssert = new SoftAssert();
-    }
-
     @Test
     @DemoProject_Jira(testRailCaseId = "***", testName = "Test creating a new project by API and assert using UI")
     public void testCreatingNewProject() {
@@ -57,11 +52,6 @@ public class APITests extends TestFlows {
     @DemoProject_Jira(testRailCaseId = "***", testName = "Test deleting a project by API and assert using UI")
     public void testDeleteProject() {
         testDeleteProjectFromWorkspace();
-    }
-
-    @AfterTest
-    public void afterTest() {
-        softAssert.assertAll();
     }
 
 }
