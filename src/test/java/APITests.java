@@ -1,5 +1,4 @@
 import org.testng.annotations.*;
-import org.testng.asserts.SoftAssert;
 import reporting.DemoProject_Jira;
 import reporting.TestListeners;
 
@@ -53,5 +52,4 @@ public class APITests extends TestFlows {
     public void testDeleteProject() {
         testDeleteProjectFromWorkspace();
     }
-
 }
