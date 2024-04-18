@@ -79,7 +79,7 @@ public class ApiHelper {
         HashMap<String, Object> createSessionIdMap = new HashMap<>();
         createSessionIdMap.put("username", jiraUsername);
         createSessionIdMap.put("password", jiraPassword);
-        Response response = Failsafe.with(createResourcesRetryPolicy).get(() -> APIRequests.makePostRequestToCreateSessionID(path, createSessionIdMap));
+        Response response = (Response) Failsafe.with(createResourcesRetryPolicy).get(() -> APIRequests.makePostRequestToCreateSessionID(path, createSessionIdMap));
         try {
             assert response != null;
             sessionId = getValueFromResponse(response, "session.value");
@@ -91,7 +91,7 @@ public class ApiHelper {
     public Project createNewProject(Project project) {
         initResponseSpecification(201);
         String path = EndPoints.CREATE_PROJECT;
-        Response response = Failsafe.with(createResourcesRetryPolicy).get(() -> APIRequests.makePostRequestToCreate(path, project));
+        Response response = (Response) Failsafe.with(createResourcesRetryPolicy).get(() -> APIRequests.makePostRequestToCreate(path, project));
         assert response != null;
         Assert.assertEquals(getValueFromResponse(response, "key"), project.getKey());
         return (Project) response.as(Project.class);
@@ -100,21 +100,21 @@ public class ApiHelper {
     public Issue createNewIssue(Issue issue) {
         initResponseSpecification(201);
         String path = EndPoints.CREATE_ISSUE;
-        Response response = Failsafe.with(createResourcesRetryPolicy).get(() -> APIRequests.makePostRequestToCreate(path, issue));
+        Response response = (Response) Failsafe.with(createResourcesRetryPolicy).get(() -> APIRequests.makePostRequestToCreate(path, issue));
         return (Issue) response.as(Issue.class);
     }
 
     public Comment addComment(Comment comment, Issue issue) {
         initResponseSpecification(201);
         String path = String.format(EndPoints.ADD_COMMENT, issue.getId());
-        Response response = Failsafe.with(createResourcesRetryPolicy).get(() -> APIRequests.makePostRequestToCreate(path, comment));
+        Response response = (Response) Failsafe.with(createResourcesRetryPolicy).get(() -> APIRequests.makePostRequestToCreate(path, comment));
         return (Comment) response.as(Comment.class);
     }
 
     public Comment updateComment(Comment comment, Issue issue) {
         initResponseSpecification(200);
         String path = String.format(EndPoints.UPDATE_COMMENT, issue.getId(), comment.getId());
-        Response response = Failsafe.with(getPutResourcesRetryPolicy).get(() -> APIRequests.makePutRequestToUpdate(path, comment));
+        Response response = (Response) Failsafe.with(getPutResourcesRetryPolicy).get(() -> APIRequests.makePutRequestToUpdate(path, comment));
         return (Comment) response.as(Comment.class);
     }
 
@@ -139,21 +139,21 @@ public class ApiHelper {
     public int getNumOfCommentsForIssue(Issue issue) {
         initResponseSpecification(200);
         String path = String.format(EndPoints.GET_ALL_COMMENTS, issue.getId());
-        Response response = Failsafe.with(getPutResourcesRetryPolicy).get(() -> APIRequests.makeGetRequestToRetrieve(path));
+        Response response = (Response) Failsafe.with(getPutResourcesRetryPolicy).get(() -> APIRequests.makeGetRequestToRetrieve(path));
         return Integer.parseInt(getValueFromResponse(response, "total"));
     }
 
     public int getDeletedIssueGetResponseStatusCode(Issue issue) {
         initResponseSpecification(404);
         String path = String.format(EndPoints.GET_ISSUE, issue.getId());
-        Response response = Failsafe.with(getPutResourcesRetryPolicy).get(() -> APIRequests.makeGetRequestToRetrieve(path));
+        Response response = (Response) Failsafe.with(getPutResourcesRetryPolicy).get(() -> APIRequests.makeGetRequestToRetrieve(path));
         return response.getStatusCode();
     }
 
     public int getDeletedProjectGetResponseStatusCode(Project project) {
         initResponseSpecification(404);
         String path = String.format(EndPoints.GET_PROJECT, project.getId());
-        Response response = Failsafe.with(getPutResourcesRetryPolicy).get(() -> APIRequests.makeGetRequestToRetrieve(path));
+        Response response = (Response) Failsafe.with(getPutResourcesRetryPolicy).get(() -> APIRequests.makeGetRequestToRetrieve(path));
         return response.getStatusCode();
     }
 
