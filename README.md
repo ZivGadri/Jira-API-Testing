@@ -8,7 +8,7 @@ or deleting a specific resource (data entity). Then, a UI process will verify th
 ### Reporting:
 * **TestRail** - In this project, I have decided to demonstrate an infrastructure of test runs being reported to TestRail via its [APIs][testrail api].
 It makes use of a customized annotation (_"@DemoProject_Jira"_) that can take a TestRail case ID(s) as a String - _String[] testRailCaseId()_ and 
-report its test run result, it's also able to take another test name variable - _String testName()_ for an easier and more readable reference inside 
+report its test run result. it's also able to take another test name variable - _String testName()_ for an easier and more readable reference inside 
 the actual TestRail report. For this feature to work, you'll need to fill in the corresponding parameters over the _JiraTesting.properties_ file, and
 provide the TestRail host and credentials, as well as the project name in which the tests are found, and set the _REPORT_TO_TESTRAIL_ parameter to **true**.  
 
