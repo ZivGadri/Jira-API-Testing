@@ -7,8 +7,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Comment {
     private String body;
-    private Visibility visibility;
     private String id;
+
+    public Comment() {
+    }
 
     public String getBody() {
         return body;
@@ -28,6 +30,5 @@ public class Comment {
 
     public Comment(String comment) {
         this.body = comment;
-        this.visibility = new Visibility();
     }
 }

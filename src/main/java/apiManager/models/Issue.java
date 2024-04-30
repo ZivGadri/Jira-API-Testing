@@ -1,6 +1,5 @@
 package apiManager.models;
 
-import apiManager.models.enums.IssueTypes;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -11,6 +10,9 @@ public class Issue {
     private String id;
     private String key;
     private String self;
+
+    public Issue() {
+    }
 
     public String getId() {
         return id;
@@ -36,7 +38,6 @@ public class Issue {
         this.self = self;
     }
 
-
     public void setFields(Fields fields) {
         this.fields = fields;
     }
@@ -45,7 +46,7 @@ public class Issue {
         return fields;
     }
 
-    public Issue(Project project, IssueTypes issueType) {
+    public Issue(Project project, String issueType) {
         this.fields = new Fields(project, issueType);
     }
 }

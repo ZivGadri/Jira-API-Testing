@@ -1,6 +1,5 @@
 package apiManager.models;
 
-import apiManager.models.enums.IssueTypes;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -15,8 +14,7 @@ public class IssueType {
         this.name = name;
     }
 
-    public IssueType(IssueTypes issueType) {
-        this.name = issueType.toString();
+    public IssueType(String issueType) {
+        this.name = issueType;
     }
-
 }

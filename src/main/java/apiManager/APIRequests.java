@@ -1,6 +1,15 @@
 package apiManager;
 
 import io.restassured.response.Response;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
 
 import static apiManager.ApiHelper.*;
 import static io.restassured.RestAssured.given;
@@ -25,6 +34,31 @@ public class APIRequests {
             logFailUnexpected(e);
         }
         return null;
+    }
+
+    /**
+     *
+     */
+    protected static String makeCurlPostRequestForCreatingProject(String uri, String sessionId, String requestBodyJson) {
+        String stringResponse;
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpPost httpPost = new HttpPost(uri);
+
+            httpPost.setHeader("Cookie", "JSESSIONID=" + sessionId);
+            httpPost.setHeader("Content-Type", "application/json");
+            httpPost.setHeader("Cache-Control", "no-cache");
+
+            httpPost.setEntity(new StringEntity(requestBodyJson));
+
+            HttpResponse response = httpClient.execute(httpPost);
+
+            HttpEntity responseEntity = response.getEntity();
+            stringResponse = EntityUtils.toString(responseEntity);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return stringResponse;
     }
 
     /**
