@@ -11,16 +11,14 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.asserts.SoftAssert;
 import properties.PropertiesManager;
+import reporting.TestListeners_Helper;
 
-import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
-import static apiManager.ApiHelper.logFailUnexpected;
-
 public class BaseTests {
     private static final Logger logger = LogManager.getLogger(BaseTests.class);
-    public final String JIRA_PROJECT_NAME = "Ziv Gadri Demo Project";
+    public final String JIRA_PROJECT_NAME = "Demo_Project";
     protected String JIRA_USER_NAME;
     protected String JIRA_PASSWORD;
     protected ApiHelper apiHelper;
@@ -31,13 +29,13 @@ public class BaseTests {
     protected String updatedTestCommentText = "This is an updated test comment";
     protected SoftAssert softAssert;
     protected PropertiesManager props;
-    protected final String pathToLocalPropertiesFile = System.getProperty("pathToLocalPropertiesFile", "src/test/resources/JiraTesting.properties");
     protected WebDriver webDriver;
     protected WebDriverFactory webDriverFactory;
 
     @BeforeClass(alwaysRun = true)
     public void beforeClass() {
-        setProperties();
+        logger.info("Starting before class initializations...");
+        props = TestListeners_Helper.props;
         setJiraCredentials();
         apiHelper = new ApiHelper(JIRA_USER_NAME, JIRA_PASSWORD);
         webDriverFactory = new WebDriverFactory(
@@ -58,21 +56,8 @@ public class BaseTests {
     @AfterMethod
     public void afterTest() {
         softAssert.assertAll();
-        webDriver.quit();
-    }
-
-
-    public void setProperties() {
-        try {
-            logger.info("Start reading properties file - {}", pathToLocalPropertiesFile);
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(pathToLocalPropertiesFile);
-            if (Objects.isNull(inputStream)) {
-                logger.error("Path to properties passed = '{}' Is not valid", pathToLocalPropertiesFile);
-                throw new ExceptionInInitializerError("Could not parse provided properties file. Please provide a valid - 'pathToLocalPropertiesFile' parameter");
-            }
-            props = new PropertiesManager(inputStream);
-        } catch (Exception e) {
-            logFailUnexpected(e);
+        if (!Objects.isNull(webDriver)) {
+            webDriver.quit();
         }
     }
 
@@ -111,23 +96,18 @@ public class BaseTests {
     }
 
     public Project buildProjectObject() {
-        return new Project.ProjectBuilder("Example", JIRA_PROJECT_NAME).
-                setProjectTypeKey("Test").
-                setProjectTemplateKey("com.atlassian.jira-core-project-templates:jira-core-project-management").
+        return new Project.ProjectBuilder("ZIV", JIRA_PROJECT_NAME).
+                setProjectTypeKey("software").
+                setProjectTemplateKey("com.pyxis.greenhopper.jira:gh-scrum-template").
                 setDescription("This is a project for demo testing").
-                setLead("Ziv Gadri").
-                setUrl("http://atlassian.com").
+                setLead(JIRA_USER_NAME).
                 setAssigneeType("PROJECT_LEAD").
-                setAvatarId(130384).
-                setIssueSecurityScheme(12345).
-                setPermissionScheme(12345).
-                setNotificationScheme(12345).
-                setCategoryId(11111).
+                setAvatarId(10200).
                 build();
     }
 
     public static Issue buildIssueObject(Project project) {
-        return new Issue(project, IssueTypes.BUG);
+        return new Issue(project, IssueTypes.BUG.getIssueType());
     }
 
     public static Comment createCommentObject(String comment) {

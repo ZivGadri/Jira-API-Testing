@@ -3,6 +3,8 @@ package apiManager;
 import apiManager.models.Comment;
 import apiManager.models.Issue;
 import apiManager.models.Project;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
@@ -38,9 +40,9 @@ public class ApiHelper {
     private String sessionId;
 
     public ApiHelper(String jiraUsername, String jiraPassword) {
-        initRequestSpecification();
         initRetryPolicies();
         createSessionId(jiraUsername, jiraPassword);
+        initRequestSpecification();
     }
 
     private void initRetryPolicies() {
@@ -95,6 +97,20 @@ public class ApiHelper {
         assert response != null;
         Assert.assertEquals(getValueFromResponse(response, "key"), project.getKey());
         return (Project) response.as(Project.class);
+    }
+
+    public String createProjectUsingCurl(Project project) {
+        String uri = JIRA_BASE_URL + EndPoints.CREATE_PROJECT;
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBodyJson;
+        try {
+            requestBodyJson = objectMapper.writeValueAsString(project);
+        } catch (JsonProcessingException jpe) {
+            logger.error("Could not map the object to a json string");
+            throw new RuntimeException(jpe.getMessage());
+        }
+        String response = APIRequests.makeCurlPostRequestForCreatingProject(uri, sessionId, requestBodyJson);
+        return getValueFromResponse(response, "id");
     }
 
     public Issue createNewIssue(Issue issue) {
@@ -183,6 +199,11 @@ public class ApiHelper {
 
     private String getValueFromResponse(Response response, String keyPath) {
         JsonPath jsonPath = new JsonPath(response.asString());
+        return jsonPath.getString(keyPath);
+    }
+
+    private String getValueFromResponse(String response, String keyPath) {
+        JsonPath jsonPath = new JsonPath(response);
         return jsonPath.getString(keyPath);
     }
 

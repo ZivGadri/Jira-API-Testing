@@ -12,15 +12,19 @@ import reporting.testrail.entities.TestRailTestResult;
 import reporting.testrail.entities.TestRailTestResults;
 import properties.PropertiesManager;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.*;
 
+import static apiManager.ApiHelper.logFailUnexpected;
 import static io.restassured.RestAssured.given;
 
 public class TestListeners_Helper {
 
     protected static final Logger logger = LogManager.getLogger(TestListeners_Helper.class);
-    protected PropertiesManager props;
+    protected static final String pathToLocalPropertiesFile = System.getProperty("pathToLocalPropertiesFile", ".\\src\\test\\resources\\JiraTesting.properties");
+    public static PropertiesManager props = setProperties();
     protected TestRail_Manager testRail_Manager;
     protected boolean reportToTestRail = Boolean.parseBoolean(getEnvVarWithDefault("REPORT_TO_TESTRAIL", props.reportToTestRail()));
     protected String TESTRAIL_USERNAME = getEnvVarWithDefault("TESTRAIL_USERNAME", props.getTestRailUserName());
@@ -29,7 +33,7 @@ public class TestListeners_Helper {
     protected String PROJECT_NAME = getEnvVarWithDefault("TEST_RAIL_PROJECT_NAME", props.getTestRailProjectName());
     protected Suites TESTRAIL_TEST_SUITE_NAME = Suites.valueOf(getEnvVarWithDefault("TESTRAIL_SUITE", Suites.REGRESSION.name()));
     protected boolean reportToSlack = Boolean.parseBoolean(System.getProperty("REPORT_TO_SLACK", props.reportToSlack()));
-    protected SlackChannel SLACK_CHANNEL = SlackChannel.valueOf(getEnvVarWithDefault("SLACK_CHANNEL", props.getSlackChannel()));
+    protected SlackChannel SLACK_CHANNEL = getSlackChannel();
     protected List<TestRailTestCase> testRailTestCases;
     protected List<Integer> casesIDs;
     protected TestRailTestResult result;
@@ -39,8 +43,6 @@ public class TestListeners_Helper {
     protected String testPlanName;
     protected String testRailSuiteName;
     protected String testRailLink;
-    protected boolean isInitializedRepositoryController = false;
-    protected boolean suiteSuccessful = true;
     protected static String SLACK_REPORT;
     protected String TESTRAIL_TESTCASE_LINK = "\n****************************************************************************************" +
             "\n* Test Rail - Test Case Link: https://" + TESTRAIL_HOST + "/index.php?/cases/view/{} " + "\n* Test Name - {} " +
@@ -175,4 +177,23 @@ public class TestListeners_Helper {
         return testCaseId;
     }
 
+    private static PropertiesManager setProperties() {
+        try {
+            logger.info("Start reading properties file - {}", pathToLocalPropertiesFile);
+            InputStream inputStream = new FileInputStream(pathToLocalPropertiesFile);
+            return new PropertiesManager(inputStream);
+        } catch (Exception e) {
+            logFailUnexpected(e);
+        }
+        throw new RuntimeException("Could not parse provided properties file. Please provide a valid - 'pathToLocalPropertiesFile' parameter");
+    }
+
+    private SlackChannel getSlackChannel() {
+        try {
+            return SlackChannel.valueOf(getEnvVarWithDefault("SLACK_CHANNEL", props.getSlackChannel()));
+        } catch (IllegalArgumentException iae) {
+            logger.error("The slack channel provided is not valid. Setting slack channel to null");
+            return null;
+        }
+    }
 }

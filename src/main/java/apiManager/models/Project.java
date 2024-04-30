@@ -16,13 +16,8 @@ public class Project {
     private String projectTemplateKey;
     private String description;
     private String lead;
-    private String url;
     private String assigneeType;
     private int avatarId;
-    private int issueSecurityScheme;
-    private int permissionScheme;
-    private int notificationScheme;
-    private int categoryId;
 
     public String getKey() {
         return key;
@@ -80,14 +75,6 @@ public class Project {
         this.lead = lead;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public String getAssigneeType() {
         return assigneeType;
     }
@@ -104,38 +91,6 @@ public class Project {
         this.avatarId = avatarId;
     }
 
-    public int getIssueSecurityScheme() {
-        return issueSecurityScheme;
-    }
-
-    public void setIssueSecurityScheme(int issueSecurityScheme) {
-        this.issueSecurityScheme = issueSecurityScheme;
-    }
-
-    public int getPermissionScheme() {
-        return permissionScheme;
-    }
-
-    public void setPermissionScheme(int permissionScheme) {
-        this.permissionScheme = permissionScheme;
-    }
-
-    public int getNotificationScheme() {
-        return notificationScheme;
-    }
-
-    public void setNotificationScheme(int notificationScheme) {
-        this.notificationScheme = notificationScheme;
-    }
-
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
-    }
-
     public Project(Project project) {
         this.key = project.getKey();
     }
@@ -147,13 +102,8 @@ public class Project {
         this.projectTemplateKey = builder.projectTemplateKey;
         this.description = builder.description;
         this.lead = builder.lead;
-        this.url = builder.url;
         this.assigneeType = builder.assigneeType;
         this.avatarId = builder.avatarId;
-        this.issueSecurityScheme = builder.issueSecurityScheme;
-        this.permissionScheme = builder.permissionScheme;
-        this.notificationScheme = builder.notificationScheme;
-        this.categoryId = builder.categoryId;
     }
 
     public static class ProjectBuilder {
@@ -163,13 +113,8 @@ public class Project {
         private String projectTemplateKey;
         private String description;
         private String lead;
-        private String url;
         private String assigneeType;
         private int avatarId;
-        private int issueSecurityScheme;
-        private int permissionScheme;
-        private int notificationScheme;
-        private int categoryId;
 
         public ProjectBuilder(String key, String name) {
             this.key = key;
@@ -196,11 +141,6 @@ public class Project {
             return this;
         }
 
-        public ProjectBuilder setUrl(String url) {
-            this.url = url;
-            return this;
-        }
-
         public ProjectBuilder setAssigneeType(String assigneeType) {
             this.assigneeType = assigneeType;
             return this;
@@ -208,26 +148,6 @@ public class Project {
 
         public ProjectBuilder setAvatarId(int avatarId) {
             this.avatarId = avatarId;
-            return this;
-        }
-
-        public ProjectBuilder setIssueSecurityScheme(int issueSecurityScheme) {
-            this.issueSecurityScheme = issueSecurityScheme;
-            return this;
-        }
-
-        public ProjectBuilder setPermissionScheme(int permissionScheme) {
-            this.permissionScheme = permissionScheme;
-            return this;
-        }
-
-        public ProjectBuilder setNotificationScheme(int notificationScheme) {
-            this.notificationScheme = notificationScheme;
-            return this;
-        }
-
-        public ProjectBuilder setCategoryId(int categoryId) {
-            this.categoryId = categoryId;
             return this;
         }
 
@@ -240,13 +160,8 @@ public class Project {
                     "projectTemplateKey=" + projectTemplateKey +
                     "description=" + description +
                     "lead=" + lead +
-                    "url=" +url +
                     "assigneeType=" + assigneeType +
                     "avatarId=" + avatarId +
-                    "issueSecurityScheme=" + issueSecurityScheme +
-                    "permissionScheme=" + permissionScheme +
-                    "notificationScheme=" + notificationScheme +
-                    "categoryId=" + categoryId +
                     "}";
         }
 

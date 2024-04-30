@@ -23,7 +23,7 @@ public class TestListeners extends TestListeners_Helper implements ITestListener
         logger.info("\n**********************************************************************************************" +
                         "\n*\n* Test started: '{}'\n*\n" +
                         "**********************************************************************************************\n",
-                iTestResult.getName().trim());
+                demoProjectJira.testName());
         sendSlackMessage(SLACK_CHANNEL, "**** Test started: " + demoProjectJira.testName() + " ****");
     }
 
@@ -32,7 +32,7 @@ public class TestListeners extends TestListeners_Helper implements ITestListener
         logger.info("\n**********************************************************************************************" +
                         "\n*\n* \"Test finished with SUCCESS:\" '{}'\n*\n" +
                         "**********************************************************************************************\n",
-                iTestResult.getName().trim());
+                demoProjectJira.testName());
         if (reportToTestRail) {
             setTestResultForTestRailReporting(iTestResult, TestResults.SUCCESS);
 
@@ -44,7 +44,7 @@ public class TestListeners extends TestListeners_Helper implements ITestListener
 
     @Override
     public synchronized void onTestFailure(ITestResult iTestResult) {
-        logger.error("*************** Error '{}' Test has failed ***************\n", iTestResult.getName().trim());
+        logger.error("*************** Error '{}' Test has failed ***************\n", demoProjectJira.testName());
         if (reportToTestRail) {
             setTestResultForTestRailReporting(iTestResult, TestResults.FAILURE);
 
@@ -56,7 +56,7 @@ public class TestListeners extends TestListeners_Helper implements ITestListener
 
     @Override
     public void onTestSkipped(ITestResult iTestResult) {
-        logger.info("*************** Skipping '{}' Test ***************\n", iTestResult.getName().trim());
+        logger.info("*************** Skipping '{}' Test ***************\n", demoProjectJira.testName());
         if (reportToTestRail) {
             setTestResultForTestRailReporting(iTestResult, TestResults.SKIPPED);
 

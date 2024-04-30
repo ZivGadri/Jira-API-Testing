@@ -1,13 +1,14 @@
 package apiManager.models;
 
-import apiManager.models.enums.IssueTypes;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonNaming(PropertyNamingStrategy.LowerCaseStrategy.class)
 public class Fields {
-
     private Project project;
     private String summary;
     private String description;
@@ -45,7 +46,7 @@ public class Fields {
         this.issueType = issueType;
     }
 
-    public Fields(Project project, IssueTypes issueType) {
+    public Fields(Project project, String issueType) {
         this.project = new Project(project);
         this.summary = "Test Issue Summary";
         this.description = "Test Issue Description";

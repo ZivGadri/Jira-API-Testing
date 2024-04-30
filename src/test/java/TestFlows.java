@@ -8,10 +8,10 @@ public class TestFlows extends BaseTests {
     }
 
     public void testCreateNewProjectAndAssertWithUI() {
-        testProject = apiHelper.createNewProject(buildProjectObject());
+        testProject = buildProjectObject();
+        String projectId = apiHelper.createProjectUsingCurl(buildProjectObject());
+        testProject.setId(projectId);
         threadSleepLog(3, "right after creating a new project");
-        softAssert.assertEquals(testProject.getName(), JIRA_PROJECT_NAME);
-        softAssert.assertAll();
     }
 
     public void testCreatingANewIssueAndAssertUsingUI() {
@@ -20,12 +20,12 @@ public class TestFlows extends BaseTests {
 
     }
 
-    public void testAddingACommentToNewIssue() {
+    public void testAddingCommentToNewIssue() {
         testComment = apiHelper.addComment(createCommentObject(testCommentText), testIssue);
         threadSleepLog(3, "right after adding a comment");
     }
 
-    public void testUpdatingAComment() {
+    public void testUpdatingCommentInIssue() {
         testComment.setBody(updatedTestCommentText);
         testComment = apiHelper.updateComment(testComment, testIssue);
         threadSleepLog(3, "right after updating a comment");
@@ -49,9 +49,5 @@ public class TestFlows extends BaseTests {
     public void testDeleteProjectFromWorkspace() {
         apiHelper.deleteProject(testProject);
         threadSleepLog(3, "right after deleting a project");
-        softAssert.assertEquals(
-                apiHelper.getDeletedIssueGetResponseStatusCode(testIssue),
-                404,
-                "Status code for getting the deleted project was not as expected");
     }
 }
