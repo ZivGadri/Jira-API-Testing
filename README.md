@@ -36,10 +36,17 @@ Sign up for an account (a trial account is good enough) if none exists.
 Type in an organization name and generate a license for the "**Jira Software (Data Center)**".  
 Confirm license key installation over the localhost server.  
 Fill in the Email, Username, and Password in **Administrator account setup** and click **Next** 
-###### NOTE - You will need to add these Username and Password values under Jira credentials in the _JiraTesting.properties_ file
+#### NOTE - You will need to add these Username and Password values under Jira credentials in the _JiraTesting.properties_ file, or, alternatively, pass them as a system property / environment variable.
 
 * Java (version 8 or above) is needed. You can download it from this [link](https://www.oracle.com/il-en/java/technologies/downloads/).
 * You'll need Maven. Download it from this [link](https://maven.apache.org/download.cgi).
+
+### Running the tests:
+* Make sure you have the Jira server up and running. If not, you can run it by running the 'start-jira.bat' (Win)/'start-jira.sh' (Mac) found in this location:
+\<path where you installed the jira>/Jira/bin/
+* Make sure you inserted your username and password either in the JiraTesting.properties file, or as a system property, or as an environment variable.
+* Right-click the file Jira-API-Testing/src/test/resources/Jira_Demo.xml --> Run
+
 
 ### References
 * JIRA server platform REST API reference - [link][jira server platform api]
