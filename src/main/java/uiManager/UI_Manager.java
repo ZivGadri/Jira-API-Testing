@@ -8,11 +8,10 @@ import uiManager.pageHelpers.*;
 
 public class UI_Manager {
     private static final Logger logger = LogManager.getLogger(UI_Manager.class);
-    private WebDriver driver;
-    private String username;
-    private String password;
-    private String jiraUrl;
-    private LoginPageHelper loginPageHelper;
+    private final WebDriver driver;
+    private final String username;
+    private final String password;
+    private final String jiraUrl;
     private MainPageHelper mainPageHelper;
     private SoftwareProjectsPageHelper softwareProjectsPageHelper;
     private ProjectPageHelper projectPageHelper;
@@ -26,7 +25,7 @@ public class UI_Manager {
 
     // Navigation methods
     public void navigateToJiraServerMainPage() {
-        loginPageHelper = new LoginPageHelper(driver, jiraUrl);
+        LoginPageHelper loginPageHelper = new LoginPageHelper(driver, jiraUrl);
         if (loginPageHelper.isInLoginPage()) {
             loginPageHelper.loginUser(username, password);
         }
