@@ -26,7 +26,7 @@ public class UI_Manager {
 
     // Navigation methods
     public void navigateToJiraServerMainPage() {
-        loginPageHelper = new LoginPageHelper(driver, jiraUrl, username, password);
+        loginPageHelper = new LoginPageHelper(driver, jiraUrl);
         if (loginPageHelper.isInLoginPage()) {
             loginPageHelper.loginUser(username, password);
         }

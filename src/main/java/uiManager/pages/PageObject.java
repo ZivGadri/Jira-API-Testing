@@ -14,6 +14,8 @@ public class PageObject {
     protected WebDriver driver;
     protected WebDriverWait wait;
 
+    public PageObject() {}
+
     public PageObject(WebDriver driver) {
         this.driver = driver;
         wait = new WebDriverWait(driver, DEFAULT_EXPLICIT_WAIT);
@@ -29,7 +31,7 @@ public class PageObject {
         waitForPageLoad();
     }
 
-    private void waitForPageLoad() {
+    public void waitForPageLoad() {
         wait.until((ExpectedCondition<Boolean>) driver -> {
             JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
             return jsExecutor.executeScript("return document.readyState").equals("complete");
@@ -69,15 +71,15 @@ public class PageObject {
     }
 
     private void clickButtonByWebElement(WebElement element, int seconds) {
-        scrollintoView(element);
+        scrollIntoView(element);
         try {
-            waitForClickable(seconds, element);
+            waitForClickable(seconds, element).click();
         } catch (ElementNotInteractableException enie) {
             ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click", element);
         }
     }
 
-    private Object scrollintoView(WebElement element) {
+    private Object scrollIntoView(WebElement element) {
         try {
             return ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true)", element);
         } catch (Exception e) {
@@ -104,7 +106,7 @@ public class PageObject {
         try {
             wait.until(ExpectedConditions.visibilityOf(element));
             return true;
-        } catch (NoSuchElementException nsee) {
+        } catch (NoSuchElementException | TimeoutException nsee) {
             logger.info("Element was not found in page");
             return false;
         }

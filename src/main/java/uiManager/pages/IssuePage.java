@@ -9,12 +9,12 @@ public class IssuePage extends PageObject {
     @FindBy(id = "DETAILS-details-module-nav")
     private WebElement issueInfoBtn;
 
-    @FindBy(className = "action-body flooded")
+    @FindBy(xpath = "//div[@class='action-body flooded']")
     private WebElement issueComment;
 
     public IssuePage(WebDriver driver) {
         super(driver);
-        PageFactory.initElements(driver, IssuePage.class);
+        PageFactory.initElements(driver, this);
     }
 
     public WebElement getIssueInfoBtn() {
@@ -24,5 +24,4 @@ public class IssuePage extends PageObject {
     public WebElement getIssueComment() {
         return issueComment;
     }
-
 }

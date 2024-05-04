@@ -56,7 +56,12 @@ public class BaseTests {
         softAssert = new SoftAssert();
         webDriver = webDriverFactory.initWebDriver(method);
         uiManager = new UI_Manager(webDriver, JIRA_USER_NAME, JIRA_PASSWORD, JIRA_BASE_URL);
-        uiManager.navigateToJiraServerMainPage();
+        try {
+            uiManager.navigateToJiraServerMainPage();
+        } catch (Exception e) {
+            logger.error("Could not navigate to Jira server's main page. Closing the Web driver");
+            webDriver.quit();
+        }
     }
 
     @AfterMethod

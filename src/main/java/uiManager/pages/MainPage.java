@@ -25,7 +25,7 @@ public class MainPage extends PageObject {
 
     public MainPage(WebDriver driver) {
         super(driver);
-        PageFactory.initElements(driver, MainPage.class);
+        PageFactory.initElements(driver, this);
     }
 
     public List<WebElement> getUpperMenus() {
@@ -43,5 +43,4 @@ public class MainPage extends PageObject {
     public WebElement getManageDashboardsSubMenuBtn() {
         return manageDashboardsSubMenuBtn;
     }
-
 }

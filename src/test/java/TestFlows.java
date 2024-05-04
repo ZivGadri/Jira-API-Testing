@@ -73,6 +73,7 @@ public class TestFlows extends BaseTests {
     public void testDeleteProjectFromWorkspace() {
         apiHelper.deleteProject(testProject);
         threadSleepLog(3, "right after deleting a project");
+        uiManager.navigateToProjects(ProjectTypes.SOFTWARE);
         Assert.assertEquals(uiManager.getNumberOfProjectsInList(), 0, "The number of projects in the list was not zero");
     }
 }

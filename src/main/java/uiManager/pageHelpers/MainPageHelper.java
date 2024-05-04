@@ -31,11 +31,11 @@ public class MainPageHelper extends MainPage {
             String currentMenu = element.getText();
             if (currentMenu.equalsIgnoreCase(menu.toString())) {
                 clickButton(element, currentMenu);
-                break;
+                return;
             }
-            logger.error("Upper menu '{}' requested was not found", menu);
-            throw new RuntimeException("Upper menu requested was not found");
         }
+        logger.error("Upper menu '{}' requested was not found", menu);
+        throw new RuntimeException("Upper menu requested was not found");
     }
 
     private void clickOnSubMenuItem(String subMenuItem) {

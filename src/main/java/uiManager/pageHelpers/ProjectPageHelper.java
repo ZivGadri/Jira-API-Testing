@@ -2,6 +2,7 @@ package uiManager.pageHelpers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import uiManager.pages.ProjectPage;
@@ -14,7 +15,8 @@ public class ProjectPageHelper extends ProjectPage {
 
     public boolean isIssueFoundInProject(String keyAndSummary) {
         for (WebElement issue : getIssuesList()) {
-            if (issue.getText().equals(keyAndSummary)) {
+            String issueTitle = findElementByParentElement(issue, By.xpath("./div[starts-with(@id,'issue')]")).getText();
+            if (issueTitle.equals(keyAndSummary)) {
                 return true;
             }
         }

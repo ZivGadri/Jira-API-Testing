@@ -26,6 +26,8 @@ public class SoftwareProjectsPageHelper extends SoftwareProjectsPage {
         for (WebElement projectRow : getSoftwareProjects()) {
             if (findElementByParentElement(projectRow, By.xpath("./td/a")).getText().equals(projectName)) {
                 clickButton(findElementByParentElement(projectRow, By.xpath("./td/a")), projectName);
+                waitForPageLoad();
+                clickButton(getBacklogSideMenu(), "Backlog");
                 return;
             }
         }

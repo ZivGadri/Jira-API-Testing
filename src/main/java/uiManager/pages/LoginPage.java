@@ -19,12 +19,7 @@ public class LoginPage extends PageObject {
     public LoginPage(WebDriver driver, String jiraUrl) {
         super(driver);
         navigateToUrl(jiraUrl);
-        PageFactory.initElements(driver, LoginPage.class);
-    }
-
-    public LoginPage(WebDriver driver) {
-        super(driver);
-        PageFactory.initElements(driver, LoginPage.class);
+        PageFactory.initElements(driver, this);
     }
 
     public WebElement getUsernameField() {

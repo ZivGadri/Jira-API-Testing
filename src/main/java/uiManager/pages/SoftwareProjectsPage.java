@@ -13,13 +13,20 @@ public class SoftwareProjectsPage extends PageObject {
     @FindAll({@FindBy(xpath = "//tbody[@class='projects-list']/tr")})
     private List<WebElement> softwareProjects;
 
+    @FindBy(xpath = "//a[contains(@aria-label,'Backlog')]")
+    private WebElement backlogSideMenu;
+
 
     public SoftwareProjectsPage(WebDriver driver) {
         super(driver);
-        PageFactory.initElements(driver, SoftwareProjectsPage.class);
+        PageFactory.initElements(driver, this);
     }
 
     public List<WebElement> getSoftwareProjects() {
         return softwareProjects;
+    }
+
+    public WebElement getBacklogSideMenu() {
+        return backlogSideMenu;
     }
 }

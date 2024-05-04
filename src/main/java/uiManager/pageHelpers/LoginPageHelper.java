@@ -7,12 +7,8 @@ import uiManager.pages.LoginPage;
 
 public class LoginPageHelper extends LoginPage {
     private static final Logger logger = LogManager.getLogger(LoginPageHelper.class);
-    public LoginPageHelper(WebDriver driver, String jiraServerUrl, String username, String password) {
+    public LoginPageHelper(WebDriver driver, String jiraServerUrl) {
         super(driver, jiraServerUrl);
-    }
-
-    public LoginPageHelper(WebDriver driver) {
-        super(driver);
     }
 
     public boolean isInLoginPage() {
