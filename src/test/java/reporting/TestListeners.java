@@ -68,9 +68,11 @@ public class TestListeners extends TestListeners_Helper implements ITestListener
 
     @Override
     public void onFinish(ITestContext iTestContext) {
-        testRail_Manager.addResultForCases(testRunID, testRailTestResults);
-        testRail_Manager.closeTestPlan(testPlanID);
-        testRailLink = String.format("https://" + TESTRAIL_HOST + "/index.php?/runs/view/%s&group_by=cases:section_id&group_order=asc", testPlanID + 1);
+        if (reportToTestRail) {
+            testRail_Manager.addResultForCases(testRunID, testRailTestResults);
+            testRail_Manager.closeTestPlan(testPlanID);
+            testRailLink = String.format("https://" + TESTRAIL_HOST + "/index.php?/runs/view/%s&group_by=cases:section_id&group_order=asc", testPlanID + 1);
+        }
         logger.info("*************** TestRail Report Successfully Generated & Sent to -" + testRailLink + "  ***************");
 
         sendSlackMessage(SLACK_CHANNEL, "\n**********************************************************" +

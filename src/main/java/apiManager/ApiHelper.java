@@ -30,7 +30,7 @@ import static io.restassured.config.EncoderConfig.encoderConfig;
 
 public class ApiHelper {
     private static final Logger logger = LogManager.getLogger(ApiHelper.class);
-    public static final String JIRA_BASE_URL = "http://localhost:8080";
+    public static String JIRA_BASE_URL;
     protected static RequestSpecification requestSpecification;
     protected static ResponseSpecification responseSpecification;
     protected RetryPolicy createResourcesRetryPolicy;
@@ -39,7 +39,8 @@ public class ApiHelper {
     protected RestAssuredConfig restAssuredConfig;
     private String sessionId;
 
-    public ApiHelper(String jiraUsername, String jiraPassword) {
+    public ApiHelper(String jiraUsername, String jiraPassword, String jiraBaseUrl) {
+        JIRA_BASE_URL = jiraBaseUrl;
         initRetryPolicies();
         createSessionId(jiraUsername, jiraPassword);
         initRequestSpecification();

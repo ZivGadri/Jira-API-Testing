@@ -71,8 +71,8 @@ public class WebDriverFactory {
         } catch (Exception e)
         {
            logger.error("Failed to create Web driver.\nMore info: " + e.getMessage());
+           throw new RuntimeException("Failed to create Web driver.\nMore info: " + e.getMessage());
         }
-        return null;
     }
 
     /**
@@ -116,16 +116,13 @@ public class WebDriverFactory {
         RemoteWebDriver webDriver;
         if ("chrome".equalsIgnoreCase(BROWSER_TYPE)) {
             // Install driver
-            WebDriverManager.chromedriver().clearDriverCache();
-            WebDriverManager.chromedriver().forceDownload().setup();
+            WebDriverManager.chromedriver().setup();
             webDriver =
                     new ChromeDriver(new ChromeOptions().merge(getBrowserCapabilities(BROWSER_TYPE)));
             sessionId = webDriver.getSessionId().toString();
         } else if ("firefox".equalsIgnoreCase(BROWSER_TYPE)) {
             // Install driver
-            WebDriverManager.firefoxdriver().clearDriverCache();
-            WebDriverManager.firefoxdriver().forceDownload().setup();
-
+            WebDriverManager.firefoxdriver().setup();
             webDriver =
                     new FirefoxDriver(new FirefoxOptions().merge(getBrowserCapabilities(BROWSER_TYPE)));
             sessionId = webDriver.getSessionId().toString();
@@ -135,9 +132,7 @@ public class WebDriverFactory {
             sessionId = webDriver.getSessionId().toString();
         } else if ("edge".equalsIgnoreCase(BROWSER_TYPE)) {
             // Install driver
-            WebDriverManager.edgedriver().clearDriverCache();
-            WebDriverManager.edgedriver().forceDownload().setup();
-
+            WebDriverManager.edgedriver().setup();
             webDriver =
                     new EdgeDriver(new EdgeOptions().merge(getBrowserCapabilities(BROWSER_TYPE)));
             sessionId = webDriver.getSessionId().toString();
