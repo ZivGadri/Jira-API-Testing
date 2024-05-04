@@ -12,18 +12,21 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.asserts.SoftAssert;
 import properties.PropertiesManager;
 import reporting.TestListeners_Helper;
+import uiManager.UI_Manager;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
 
 public class BaseTests {
     private static final Logger logger = LogManager.getLogger(BaseTests.class);
+    public static final String JIRA_BASE_URL = "http://localhost:8080";
     public final String JIRA_PROJECT_NAME = "Demo_Project";
     protected String JIRA_USER_NAME;
     protected String JIRA_PASSWORD;
     protected ApiHelper apiHelper;
     protected Project testProject;
     protected Issue testIssue;
+    protected String issueSummary;
     protected Comment testComment;
     protected String testCommentText = "This is a test comment";
     protected String updatedTestCommentText = "This is an updated test comment";
@@ -31,13 +34,14 @@ public class BaseTests {
     protected PropertiesManager props;
     protected WebDriver webDriver;
     protected WebDriverFactory webDriverFactory;
+    protected UI_Manager uiManager;
 
     @BeforeClass(alwaysRun = true)
     public void beforeClass() {
         logger.info("Starting before class initializations...");
         props = TestListeners_Helper.props;
         setJiraCredentials();
-        apiHelper = new ApiHelper(JIRA_USER_NAME, JIRA_PASSWORD);
+        apiHelper = new ApiHelper(JIRA_USER_NAME, JIRA_PASSWORD, JIRA_BASE_URL);
         webDriverFactory = new WebDriverFactory(
                 Boolean.parseBoolean(getEnvVarWithDefault("IS_BROWSER_LOCAL", props.getIsBrowserLocal())),
                 getEnvVarWithDefault("SAUCELABS_USER", props.getSauceLabsUser()),
@@ -51,6 +55,8 @@ public class BaseTests {
     public void beforeMethod(Method method) {
         softAssert = new SoftAssert();
         webDriver = webDriverFactory.initWebDriver(method);
+        uiManager = new UI_Manager(webDriver, JIRA_USER_NAME, JIRA_PASSWORD, JIRA_BASE_URL);
+        uiManager.navigateToJiraServerMainPage();
     }
 
     @AfterMethod
