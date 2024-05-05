@@ -47,6 +47,7 @@ public class ApiHelper {
     }
 
     private void initRetryPolicies() {
+        logger.info("Initializing retry policies...");
         restAssuredConfig = RestAssured.config()
                 .encoderConfig(encoderConfig()
                         .appendDefaultContentCharsetToContentTypeIfUndefined(false));
@@ -78,6 +79,7 @@ public class ApiHelper {
     }
 
     public void createSessionId(String jiraUsername, String jiraPassword) {
+        logger.info("Extracting session ID");
         String path = JIRA_BASE_URL + EndPoints.CREATE_SESSION;
         HashMap<String, Object> createSessionIdMap = new HashMap<>();
         createSessionIdMap.put("username", jiraUsername);
@@ -91,16 +93,8 @@ public class ApiHelper {
         }
     }
 
-    public Project createNewProject(Project project) {
-        initResponseSpecification(201);
-        String path = EndPoints.CREATE_PROJECT;
-        Response response = (Response) Failsafe.with(createResourcesRetryPolicy).get(() -> APIRequests.makePostRequestToCreate(path, project));
-        assert response != null;
-        Assert.assertEquals(getValueFromResponse(response, "key"), project.getKey());
-        return (Project) response.as(Project.class);
-    }
-
     public String createProjectUsingCurl(Project project) {
+        logger.info("Starting API call for creating a new project");
         String uri = JIRA_BASE_URL + EndPoints.CREATE_PROJECT;
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBodyJson;
@@ -115,6 +109,7 @@ public class ApiHelper {
     }
 
     public Issue createNewIssue(Issue issue) {
+        logger.info("Starting API call for creating a new issue");
         initResponseSpecification(201);
         String path = EndPoints.CREATE_ISSUE;
         Response response = (Response) Failsafe.with(createResourcesRetryPolicy).get(() -> APIRequests.makePostRequestToCreate(path, issue));
@@ -122,6 +117,7 @@ public class ApiHelper {
     }
 
     public Comment addComment(Comment comment, Issue issue) {
+        logger.info("Starting API call for add a new comment");
         initResponseSpecification(201);
         String path = String.format(EndPoints.ADD_COMMENT, issue.getId());
         Response response = (Response) Failsafe.with(createResourcesRetryPolicy).get(() -> APIRequests.makePostRequestToCreate(path, comment));
@@ -129,6 +125,7 @@ public class ApiHelper {
     }
 
     public Comment updateComment(Comment comment, Issue issue) {
+        logger.info("Starting API call for updating a comment");
         initResponseSpecification(200);
         String path = String.format(EndPoints.UPDATE_COMMENT, issue.getId(), comment.getId());
         Response response = (Response) Failsafe.with(getPutResourcesRetryPolicy).get(() -> APIRequests.makePutRequestToUpdate(path, comment));
@@ -136,24 +133,28 @@ public class ApiHelper {
     }
 
     public void deleteComment(Comment comment, Issue issue) {
+        logger.info("Starting API call for deleting a comment");
         initResponseSpecification(204);
         String path = String.format(EndPoints.DELETE_COMMENT, issue.getId(), comment.getId());
         Failsafe.with(deleteResourcesRetryPolicy).get(() -> APIRequests.makeDeleteRequest(path));
     }
 
     public void deleteIssue(Issue issue) {
+        logger.info("Starting API call for deleting an issue");
         initResponseSpecification(204);
         String path = String.format(EndPoints.DELETE_ISSUE, issue.getId());
         Failsafe.with(deleteResourcesRetryPolicy).get(() -> APIRequests.makeDeleteRequest(path));
     }
 
     public void deleteProject(Project project) {
+        logger.info("Starting API call for deleting a project");
         initResponseSpecification(204);
         String path = String.format(EndPoints.DELETE_PROJECT, project.getId());
         Failsafe.with(deleteResourcesRetryPolicy).get(() -> APIRequests.makeDeleteRequest(path));
     }
 
     public int getNumOfCommentsForIssue(Issue issue) {
+        logger.info("Retrieving the number of comments for issue");
         initResponseSpecification(200);
         String path = String.format(EndPoints.GET_ALL_COMMENTS, issue.getId());
         Response response = (Response) Failsafe.with(getPutResourcesRetryPolicy).get(() -> APIRequests.makeGetRequestToRetrieve(path));
@@ -161,6 +162,7 @@ public class ApiHelper {
     }
 
     public int getDeletedIssueGetResponseStatusCode(Issue issue) {
+        logger.info("Starting API call getting a deleted issue");
         initResponseSpecification(404);
         String path = String.format(EndPoints.GET_ISSUE, issue.getId());
         Response response = (Response) Failsafe.with(getPutResourcesRetryPolicy).get(() -> APIRequests.makeGetRequestToRetrieve(path));

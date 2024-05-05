@@ -17,16 +17,19 @@ public class MainPageHelper extends MainPage {
     }
 
     public void navigateToSoftwareProjects() {
+        logger.info("Navigating to Software projects");
         clickOnMenu(MainUpperMenus.PROJECTS);
         clickOnSubMenuItem(SubMenuItems.Projects.SOFTWARE.getProjectSubMenu());
     }
 
     public void navigateToBusinessProjects() {
+        logger.info("Navigating to Business projects");
         clickOnMenu(MainUpperMenus.PROJECTS);
         clickOnSubMenuItem(SubMenuItems.Projects.BUSINESS.getProjectSubMenu());
     }
 
     private void clickOnMenu(MainUpperMenus menu) {
+        logger.info("Clicking on {} upper menu", menu.toString());
         for (WebElement element : getUpperMenus()) {
             String currentMenu = element.getText();
             if (currentMenu.equalsIgnoreCase(menu.toString())) {
@@ -39,6 +42,7 @@ public class MainPageHelper extends MainPage {
     }
 
     private void clickOnSubMenuItem(String subMenuItem) {
+        logger.info("Clicking on {} submenu", subMenuItem);
         WebElement elementToClick = null;
         if (subMenuItem.equals(SubMenuItems.Projects.SOFTWARE.getProjectSubMenu())) {
             elementToClick = getSoftwareProjectsSubMenuBtn();
@@ -55,6 +59,4 @@ public class MainPageHelper extends MainPage {
             throw new RuntimeException();
         }
     }
-
-
 }

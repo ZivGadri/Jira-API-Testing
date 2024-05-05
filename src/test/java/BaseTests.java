@@ -82,6 +82,7 @@ public class BaseTests {
      * @return String value
      **/
     public String getEnvVarWithDefault(String varName, String def) {
+        logger.info("Retrieving variable {}", varName);
         String returnEnvValue = System.getenv(varName);
         String returnPropValue = System.getProperty(varName);
         if ((Objects.isNull(returnEnvValue) || returnEnvValue.isEmpty())
@@ -95,6 +96,7 @@ public class BaseTests {
     protected void setJiraCredentials() {
         JIRA_USER_NAME = getEnvVarWithDefault("JIRA_USER_NAME", props.getJiraUserName());
         JIRA_PASSWORD = getEnvVarWithDefault("JIRA_PASSWORD", props.getJiraPassword());
+        logger.info("Jira username is set to: {}\nJira password is set to: {}", JIRA_USER_NAME, JIRA_PASSWORD);
     }
 
     public static void threadSleepLog(long sec, String extraDetails) {
@@ -107,6 +109,7 @@ public class BaseTests {
     }
 
     public Project buildProjectObject() {
+        logger.info("Building a new Project object");
         return new Project.ProjectBuilder("ZIV", JIRA_PROJECT_NAME).
                 setProjectTypeKey("software").
                 setProjectTemplateKey("com.pyxis.greenhopper.jira:gh-scrum-template").
@@ -118,10 +121,12 @@ public class BaseTests {
     }
 
     public static Issue buildIssueObject(Project project) {
+        logger.info("Building a new Issue object");
         return new Issue(project, IssueTypes.BUG.getIssueType());
     }
 
     public static Comment createCommentObject(String comment) {
+        logger.info("Building a new Comment object");
         return new Comment(comment);
     }
 
