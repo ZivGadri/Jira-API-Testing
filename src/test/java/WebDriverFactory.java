@@ -34,6 +34,7 @@ public class WebDriverFactory {
     private String sessionId;
     private final boolean isBrowserLocal;
     private RemoteWebDriver webDriver;
+    private String testName;
 
     public WebDriverFactory(boolean isBrowserLocal, String saucelabsUser, String saucelabsKey, String browserType, String osPlatform) {
         this.isBrowserLocal = isBrowserLocal;
@@ -55,7 +56,6 @@ public class WebDriverFactory {
     }
 
     public RemoteWebDriver createWebDriver(Method method) {
-        String testName;
         try {
             testName = method.getDeclaredAnnotation(DemoProject_Jira.class).testName();
         } catch (NullPointerException npe) {
@@ -64,7 +64,7 @@ public class WebDriverFactory {
         }
         try {
             if (!isBrowserLocal) {
-                return createRemoteDriver(testName);
+                return createRemoteDriver();
             } else {
                 return createLocalDriver();
             }
@@ -80,9 +80,9 @@ public class WebDriverFactory {
      * See <a href="https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/">...</a>
      * for supported OS/browser combinations.
      *
-     * @param testName  The name of the test (method) for saucelabs reporting
      */
-    private RemoteWebDriver createRemoteDriver(String testName) throws MalformedURLException {
+    private RemoteWebDriver createRemoteDriver() throws MalformedURLException {
+        logger.info("Starting the creation of remote web driver for test: {}", testName);
         URL remoteURL = new URL (String.format(SAUCELABS_WEBDRIVER_URL, SAUCELABS_USER, SAUCELABS_KEY));
         MutableCapabilities caps;
         MutableCapabilities sauceOptions = new MutableCapabilities();
@@ -113,6 +113,7 @@ public class WebDriverFactory {
      * Create a local Selenium instance.
      */
     private RemoteWebDriver createLocalDriver() {
+        logger.info("Starting the creation of local web driver for test: {}", testName);
         RemoteWebDriver webDriver;
         if ("chrome".equalsIgnoreCase(BROWSER_TYPE)) {
             // Install driver

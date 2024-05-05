@@ -19,6 +19,7 @@ public class PageObject {
     public PageObject(WebDriver driver) {
         this.driver = driver;
         wait = new WebDriverWait(driver, DEFAULT_EXPLICIT_WAIT);
+        waitForPageLoad();
     }
 
     public WebDriver getDriver() {
@@ -32,6 +33,7 @@ public class PageObject {
     }
 
     public void waitForPageLoad() {
+        logger.info("Waiting for page to load...");
         wait.until((ExpectedCondition<Boolean>) driver -> {
             JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
             return jsExecutor.executeScript("return document.readyState").equals("complete");
@@ -56,6 +58,7 @@ public class PageObject {
     }
 
     public void sendText(WebElement element, String textToSend) {
+        logger.info("Inserting text to text field");
         clearTextField(element);
         element.sendKeys(textToSend);
         threadSleepLog(1, String.format("after text '%s' inserted to text box.", textToSend));

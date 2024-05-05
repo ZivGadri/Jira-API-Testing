@@ -37,7 +37,13 @@ public class APIRequests {
     }
 
     /**
+     * This method sends a curl http request for creating a new project in Jira server
      *
+     * @param uri               The uri for the request
+     * @param sessionId         The session ID for authentication
+     * @param requestBodyJson   The project body for the request
+     *
+     * @return The response as a String
      */
     protected static String makeCurlPostRequestForCreatingProject(String uri, String sessionId, String requestBodyJson) {
         String stringResponse;
